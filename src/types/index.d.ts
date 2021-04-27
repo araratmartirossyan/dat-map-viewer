@@ -55,3 +55,5 @@ type Nullable<T> = {
 type ComponentSize = any
 
 type SFCWithInstall = any
+
+declare module 'vue3-google-map'

@@ -2667,10 +2667,10 @@ vue-tsc@^0.0.15:
   dependencies:
     unzipper "0.10.11"
 
-vue3-google-map@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/vue3-google-map/-/vue3-google-map-0.7.0.tgz#cab9acc2a92674ea4347a22ef152616492acac47"
-  integrity sha512-wFaoPtxvZlvC5hQFYRuii+9kCqetrGfrcXgCPOl7/MhZMT7225HFOSI5e9FSn2ZbKNzn8ubqCB1/wV7fUZPrUQ==
+vue3-google-map@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/vue3-google-map/-/vue3-google-map-0.7.6.tgz#14a94bd8f0f6cfd9a7b2c30c171ebed9c905b726"
+  integrity sha512-wIX9YNhkRqBI83s5U2KcY9fDsDR930WN7qPUFOXVUzRoBh1NuXF1PymqCm9xL+xOsDtpW6ThjUgbUHvHTu9+6g==
   dependencies:
     "@googlemaps/js-api-loader" "^1.11.1"
 

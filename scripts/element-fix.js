@@ -44,5 +44,7 @@ fs.writeFileSync(
   transitionPath,
   fs
     .readFileSync(transitionPath, 'utf8')
-    .replace('/transition/', '/el-transtion/')
+    .replace('../transition/', '../el-transtion/')
 )
+
+console.log('DONE')

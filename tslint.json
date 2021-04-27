@@ -1,0 +1,6 @@
+{
+  "extends": "tslint:latest",
+  "linterOptions": {
+    "exclude": ["node_modules/vue3-google-map/dist/types/components/index.d.ts"]
+  }
+}
