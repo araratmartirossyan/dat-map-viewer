@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build --debug",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "postinstall": "node ./scripts/element-fix.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -14,8 +15,7 @@
     "socket.io-client": "^4.0.1",
     "vue": "^3.0.5",
     "vue-router": "4",
-    "vue3-google-map": "^0.7.6",
-    "postinstall": "node ./scripts/element-fix.js"
+    "vue3-google-map": "^0.7.6"
   },
   "devDependencies": {
     "@types/googlemaps": "^3.43.3",
