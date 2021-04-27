@@ -18,9 +18,9 @@
       </template>
 
       <template v-else>
-        <heading tag="h3"
-          >Expected arrival {{ randomTime(15, 20) }} min</heading
-        >
+        <heading tag="h3">
+          Expected arrival {{ randomTime(15, 20) }} min
+        </heading>
         <user-card
           v-for="({ avatar, lastName, firstName, id }, index) in userStore
             .localFoundUsers?.nearest"
@@ -32,8 +32,8 @@
           @on-card-click="handleShowModal"
         />
 
-        <heading tag="h3"
-          >Expected arrival {{ randomTime(33, 40) }} min
+        <heading tag="h3">
+          Expected arrival {{ randomTime(33, 40) }} min
         </heading>
         <user-card
           v-for="({ avatar, lastName, firstName, id }, index) in userStore
