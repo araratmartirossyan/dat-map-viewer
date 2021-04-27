@@ -6,7 +6,7 @@
       :name="name"
       :value="modelValue"
       :type="type"
-      @input="onInput('update:modelValue', $event?.target?.value)"
+      @input="onInput('update:modelValue', $event?.currentTarget)"
     />
   </div>
 </template>

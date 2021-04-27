@@ -47,3 +47,11 @@ declare namespace DAT {
     farest: DAT.userInfo[]
   }
 }
+
+type Nullable<T> = {
+  [P in keyof T]: T[P] | null
+}
+
+type ComponentSize = any
+
+type SFCWithInstall = any

@@ -7,18 +7,18 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "^1.11.1",
     "axios": "^0.21.1",
     "element-plus": "^1.0.2-beta.39",
-    "google-maps-api-loader": "^1.1.1",
     "pinia": "^2.0.0-alpha.13",
     "ramda": "^0.27.1",
     "socket.io-client": "^4.0.1",
     "vue": "^3.0.5",
     "vue-router": "4",
-    "vue3-google-map": "^0.7.0"
+    "vue3-google-map": "^0.7.0",
+    "postinstall": "node ./scripts/element-fix.js"
   },
   "devDependencies": {
+    "@types/googlemaps": "^3.43.3",
     "@types/node": "^14.14.37",
     "@types/ramda": "^0.27.40",
     "@vitejs/plugin-vue": "^1.2.1",
