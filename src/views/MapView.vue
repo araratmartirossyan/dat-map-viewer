@@ -18,7 +18,9 @@
       </template>
 
       <template v-else>
-        <heading tag="h3">Expected arrival 18 min</heading>
+        <heading tag="h3"
+          >Expected arrival {{ randomTime(15, 20) }} min</heading
+        >
         <user-card
           v-for="({ avatar, lastName, firstName, id }, index) in userStore
             .localFoundUsers?.nearest"
@@ -30,7 +32,9 @@
           @on-card-click="handleShowModal"
         />
 
-        <heading tag="h3">Expected arrival 34 min </heading>
+        <heading tag="h3"
+          >Expected arrival {{ randomTime(33, 40) }} min
+        </heading>
         <user-card
           v-for="({ avatar, lastName, firstName, id }, index) in userStore
             .localFoundUsers?.farest"
@@ -119,6 +123,9 @@ const handleAssign = () => {
   showModal = !showModal
   userStore.setChosenAgent(currentAgent)
 }
+
+const randomTime = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min + 1) + min)
 </script>
 
 <style scoped>
