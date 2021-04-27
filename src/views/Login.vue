@@ -65,7 +65,7 @@ const authForm = reactive<DAT.AuthForm>({
 const handleLogin = async () => {
   try {
     await authStore.login(authForm)
-    router.push('/')
+    router.push('/?plateNo=FT487EC')
   } catch {}
 }
 </script>

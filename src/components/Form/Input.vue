@@ -6,7 +6,7 @@
       :name="name"
       :value="modelValue"
       :type="type"
-      @input="onInput('update:modelValue', $event?.currentTarget)"
+      @input="handleUpdate"
     />
   </div>
 </template>
@@ -15,6 +15,11 @@
 import { defineProps, defineEmit } from 'vue'
 
 const onInput = defineEmit(['update:modelValue'])
+
+const handleUpdate = (e: any) => {
+  const value = (e.target as HTMLInputElement).value
+  onInput('update:modelValue', value)
+}
 
 defineProps({
   placeholder: {
