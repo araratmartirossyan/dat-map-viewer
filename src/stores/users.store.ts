@@ -37,13 +37,15 @@ export const useUserStore = defineStore({
       chosenAgentId: null
     },
   getters: {
-    usersWithLocation: ({ users }) => users?.filter((user) => !!user.coords),
+    usersWithLocation: ({ users }) => users?.filter(user => !!user.coords),
     localFoundUsers: ({ usersWithLocation = [] }) => {
       const claimStore = useClaimStore()
-      return findNearestLocation(
-        usersWithLocation,
-        claimStore.currentClaim?.location
-      )
+      if (claimStore.currentClaim) {
+        return findNearestLocation(
+          usersWithLocation,
+          claimStore.currentClaim?.location
+        )
+      }
     },
     foundAgent: ({ chosenAgentId, users }) => {
       return users.find(({ _id }) => _id === chosenAgentId)
@@ -58,8 +60,7 @@ export const useUserStore = defineStore({
     init() {
       this.instance.on('details', (data: TrackSocketResponse) => {
         if (data) {
-          console.log(data, 'data')
-          const users = this.users.map((user) => {
+          const users = this.users.map(user => {
             if (user._id === data._id) {
               return {
                 ...user,
