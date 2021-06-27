@@ -90,8 +90,13 @@ const handleLogin = async () => {
   }
   &__poster {
     width: 100%;
+    padding: $spacing-s + 2px;
     border-top-left-radius: $spacing-m;
     border-bottom-left-radius: $spacing-m;
+
+    .el-image__inner {
+      border-radius: $spacing-m;
+    }
   }
   &__form {
     &--content {
