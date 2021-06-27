@@ -13,7 +13,7 @@
         v-else
         shape="square"
         :size="60"
-        :src="avatar"
+        :src="`${SOCKET_URL}${avatar.url}`"
         alt="empty picture image"
       />
     </div>
@@ -32,8 +32,8 @@ const Heading = defineAsyncComponent(() => import('@/components/Heading.vue'))
 
 defineProps({
   id: {
-    type: Number,
-    default: 0
+    type: String,
+    default: ''
   },
   firstName: {
     type: String,
@@ -48,7 +48,7 @@ defineProps({
     default: 'free'
   },
   avatar: {
-    type: String,
+    type: Object,
     default: ''
   }
 })
@@ -57,6 +57,8 @@ const statusTypes: DAT.Status = {
   free: 'success',
   busy: 'danger'
 }
+
+const SOCKET_URL = import.meta.env.VITE_SOCKET as string
 </script>
 
 <style lang="scss">

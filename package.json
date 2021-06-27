@@ -2,15 +2,15 @@
   "name": "dat-map",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3200",
     "build": "vue-tsc --noEmit && vite build --debug",
     "serve": "vite preview",
     "postinstall": "node ./scripts/element-fix.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "element-plus": "^1.0.2-beta.41",
-    "pinia": "^2.0.0-alpha.13",
+    "element-plus": "^1.0.2-beta.48",
+    "pinia": "^2.0.0-beta.2",
     "ramda": "^0.27.1",
     "socket.io-client": "^4.0.1",
     "vue": "^3.0.5",

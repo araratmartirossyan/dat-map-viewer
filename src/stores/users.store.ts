@@ -1,23 +1,30 @@
 import { defineStore } from 'pinia'
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 
 // Utils
 import { findNearestLocation } from '@/utils/pathFind.util'
-import { usersMock } from '@/mocks/users.mock'
+import { useClaimStore } from './claims.store'
+import { getUsers } from '@/services/user.service'
+import { assignClaim } from '@/services/claim.service'
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET as string
 
-type UserStore = {
-  instance: any
-  users: DAT.userInfo[]
-  foundUsers?: DAT.PathFindResult | null
-  chosenAgentId: number
+type SortedUsers = {
+  nearest: DAT.userInfo[]
+  farest: DAT.userInfo[]
 }
 
-type FoundUsersGetters = {
-  foundUsers?: DAT.PathFindResult
-  chosenAgentId?: number
+type UserStore = {
+  instance: Socket
   users: DAT.userInfo[]
+  foundUsers?: DAT.PathFindResult | null
+  chosenAgentId: string | null
+  usersWithLocation?: DAT.userInfo[]
+  localFoundUsers?: SortedUsers
+}
+
+interface TrackSocketResponse extends DAT.userInfo {
+  position: DAT.Coords
 }
 
 export const useUserStore = defineStore({
@@ -25,36 +32,56 @@ export const useUserStore = defineStore({
   state: () =>
     <UserStore>{
       instance: io(SOCKET_URL),
-      users: usersMock,
+      users: [],
       foundUsers: null,
-      chosenAgentId: 0
+      chosenAgentId: null
     },
   getters: {
-    localFoundUsers: ({ foundUsers }: FoundUsersGetters) => foundUsers,
-    foundAgent: ({ chosenAgentId, users }: FoundUsersGetters) =>
-      users.find(({ id }) => id === chosenAgentId)
+    usersWithLocation: ({ users }) => users?.filter((user) => !!user.coords),
+    localFoundUsers: ({ usersWithLocation = [] }) => {
+      const claimStore = useClaimStore()
+      return findNearestLocation(
+        usersWithLocation,
+        claimStore.currentClaim?.location
+      )
+    },
+    foundAgent: ({ chosenAgentId, users }) => {
+      console.log(chosenAgentId, users)
+      return users.find(({ _id }) => _id === chosenAgentId)
+    },
+
+    hasFarest: ({ localFoundUsers }) =>
+      localFoundUsers && localFoundUsers?.farest?.length > 0,
+    hasNearest: ({ localFoundUsers }) =>
+      localFoundUsers && localFoundUsers?.nearest?.length > 0
   },
   actions: {
     init() {
-      this.instance.on('details', (data: any) => {
+      this.instance.on('details', (data: TrackSocketResponse) => {
         if (data) {
-          this.users.push({
-            firstName: data.firsName,
-            lastName: data.lastName,
-            avatar: data.avatar,
-            coords: {
-              lat: data.position.lat,
-              lng: data.position.lng
+          const users = this.users.map((user) => {
+            if (user._id === data._id) {
+              return {
+                ...user,
+                coords: {
+                  lat: data.position.lat,
+                  long: data.position.long
+                }
+              }
             }
+
+            return user
           })
+
+          this.users = [...users]
         }
       })
     },
-    fetchUsers(currentClaim: DAT.Claim) {
-      this.foundUsers = findNearestLocation(this.users, currentClaim?.location)
+    async fetchUsers() {
+      this.users = await getUsers()
     },
-    setChosenAgent(id: number) {
-      this.chosenAgentId = id
+    async setChosenAgent(userId: string, claimId: string) {
+      await assignClaim({ userId, claimId })
     }
   }
 })

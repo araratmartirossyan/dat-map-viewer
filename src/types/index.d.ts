@@ -1,16 +1,17 @@
 declare namespace DAT {
   type Coords = {
     lat: number
-    lng: number
+    long: number
   }
 
   type userInfo = {
     firstName: string
     lastName: string
-    avatar: string
+    avatar: Avatar
     coords: Coords
     currentDistance?: number
     id?: number
+    _id?: string
   }
 
   type Status = {
@@ -23,6 +24,14 @@ declare namespace DAT {
     password: string
   }
 
+  type Avatar = {
+    ext: string
+    mime: string
+    name: string
+    url: string
+    _id: string
+  }
+
   interface GenerateTokenResponse {
     token: string
   }
@@ -33,12 +42,21 @@ declare namespace DAT {
     password: string
   }
 
+  enum ClaimStatus {
+    Draft = 'Draft',
+    Assigned = 'Assigned',
+    Finished = 'Finished'
+  }
+
   type Claim = {
+    title: string
+    claimId: string
+    description: string
     plateNo: string
-    vin: string
-    car: string
-    type: string
+    status: ClaimStatus
+    agent?: DAT.userInfo
     location: Coords
+    vin: string
     image: string
   }
 

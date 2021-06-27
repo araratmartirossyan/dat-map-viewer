@@ -3,7 +3,6 @@
 
 import { distance } from './findLocation.util'
 import { groupBy } from 'ramda'
-import { UserInfo } from 'node:os'
 
 type PathFindResult = {
   nearest: DAT.userInfo[]
@@ -15,13 +14,17 @@ export const findNearestLocation = (
   claimLocation: DAT.Coords
 ): PathFindResult => {
   const signedUsers = users.map((user) => {
-    const { lat, lng } = user.coords
-    const res = distance(lat, lng, claimLocation.lat, claimLocation.lng)
+    if (user.coords) {
+      const { lat, long } = user.coords
+      const res = distance(lat, long, claimLocation.lat, claimLocation.long)
 
-    return {
-      ...user,
-      currentDistance: res
+      return {
+        ...user,
+        currentDistance: res
+      }
     }
+
+    return user
   })
   return findTop(signedUsers)
 }
