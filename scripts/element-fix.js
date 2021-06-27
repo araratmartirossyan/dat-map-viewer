@@ -42,5 +42,5 @@ const transPath = path.resolve(
 
 fs.writeFileSync(
   transPath,
-  fs.readFileSync(transPath, 'utf8').replace('transition', 'el-transition')
+  fs.readFileSync(transPath, 'utf8').replace('/transition', '/el-transition')
 )
