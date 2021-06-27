@@ -46,7 +46,6 @@ export const useUserStore = defineStore({
       )
     },
     foundAgent: ({ chosenAgentId, users }) => {
-      console.log(chosenAgentId, users)
       return users.find(({ _id }) => _id === chosenAgentId)
     },
 
@@ -59,6 +58,7 @@ export const useUserStore = defineStore({
     init() {
       this.instance.on('details', (data: TrackSocketResponse) => {
         if (data) {
+          console.log(data, 'data')
           const users = this.users.map((user) => {
             if (user._id === data._id) {
               return {

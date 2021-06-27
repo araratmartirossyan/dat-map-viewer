@@ -55,6 +55,7 @@
       :zoom="13"
     >
       <Marker
+        v-if="claimStore.currentClaim"
         :options="{
           icon: 'https://svgshare.com/i/WdB.svg',
           position: {
@@ -63,7 +64,8 @@
           }
         }"
       />
-s      <Marker
+      s
+      <Marker
         v-for="({ coords: { lat, long } }, key) in userStore.usersWithLocation"
         :key="`coord-${String(key)}`"
         :options="{
@@ -108,7 +110,7 @@ ref: showModal = false
 ref: currentAgent = ''
 
 // BL
-onMounted( async() => {
+onMounted(async () => {
   await userStore.fetchUsers()
   await claimStore.fetchClaim(query.claimId as string)
   userStore.init()
