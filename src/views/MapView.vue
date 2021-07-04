@@ -8,7 +8,7 @@
       />
 
       <template v-if="userStore.foundAgent">
-        <heading tag="h3">Agent on the way</heading>
+        <heading tag="h3"> Expected arrival {{ duration }} </heading>
         <user-card
           :avatar="userStore.foundAgent.avatar"
           :last-name="userStore.foundAgent.lastName"
@@ -48,11 +48,14 @@
         />
       </template>
     </drawer>
-    <google-map
+    <div id="ann"></div>
+    <!-- <google-map
       :api-key="API_KEY"
       style="width: 100%; height: 100vh"
       :center="center"
       :zoom="13"
+      ref="currentMap"
+      id="map"
     >
       <Marker
         v-if="claimStore.currentClaim"
@@ -64,7 +67,6 @@
           }
         }"
       />
-      s
       <Marker
         v-for="({ coords: { lat, long } }, key) in userStore.usersWithLocation"
         :key="`coord-${String(key)}`"
@@ -75,16 +77,13 @@
           }
         }"
       />
-    </google-map>
+    </google-map> -->
     <assign-agent-modal :show-modal="showModal" @on-submit="handleAssign" />
   </div>
   <div v-else></div>
 </template>
 
 <script setup lang="ts">
-// Libs
-import { GoogleMap, Marker } from 'vue3-google-map'
-
 // Stores
 import { useUserStore, useClaimStore } from '@/stores'
 
@@ -95,35 +94,58 @@ import Claim from '@/components/Claim.vue'
 import AssignAgentModal from '@/components/modals/AssignAgent.modal.vue'
 
 import { useRoute } from 'vue-router'
-import { onMounted } from '@vue/runtime-core'
+import { computed, onMounted, ref, watch, watchEffect } from '@vue/runtime-core'
+import { useDirection, useMap } from './useMap.hook'
 
 const { query } = useRoute()
 const claimStore = useClaimStore()
 const userStore = useUserStore()
 
 // Constants
-const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY
-const center = { lat: 51.726967601002414, lng: 5.29334700255126 }
+const center = { lat: 51.726967601002414, long: 5.29334700255126 }
 
 // Data
-ref: showModal = false
-ref: currentAgent = ''
+const showModal = ref(false)
+const currentAgent = ref('')
+const duration = ref('')
+const distance = ref('')
 
 // BL
 onMounted(async () => {
   await userStore.fetchUsers()
   await claimStore.fetchClaim(query.claimId as string)
   userStore.init()
+
+  const { mapInstance, loaderInstance } = await useMap(center, 'ann')
+
+  if (claimStore.currentClaim) {
+    watchEffect(async () => {
+      const location = claimStore.currentClaim?.location
+      const foundAgent = userStore.foundAgent
+      // TO_DO Change center to USER LOCATION
+      if (foundAgent?.coords && location) {
+        const { info } = await useDirection(
+          foundAgent.coords,
+          location,
+          mapInstance,
+          loaderInstance
+        )
+
+        duration.value = info.duration.text
+        distance.value = info.distance.text
+      }
+    })
+  }
 })
 
 const handleShowModal = (id: string) => {
-  currentAgent = id
-  showModal = true
+  currentAgent.value = id
+  showModal.value = true
 }
 
 const handleAssign = () => {
-  showModal = !showModal
-  userStore.setChosenAgent(currentAgent, query.claimId as string)
+  showModal.value = !showModal.value
+  userStore.setChosenAgent(currentAgent.value, query.claimId as string)
 }
 
 const randomTime = (min: number, max: number) =>
@@ -143,5 +165,10 @@ const randomTime = (min: number, max: number) =>
 ul,
 li {
   list-style-type: none;
+}
+
+#ann {
+  width: 100%;
+  height: 100vh;
 }
 </style>
