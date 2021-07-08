@@ -81,7 +81,7 @@ export const useMarker = (
       lat: coords.lat,
       lng: coords.lng
     },
-    icon: icons[iconType],
+    icon: iconType === 'agent' ? icons.agent : icons.claim,
     map
   })
 }
