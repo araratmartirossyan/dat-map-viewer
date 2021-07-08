@@ -1,13 +1,29 @@
 declare namespace DAT {
   type Coords = {
     lat: number
-    long: number
+    lng: number
+  }
+
+  type PartnerInfo = {
+    active: string
+    city: string
+    country: string
+    customerNumber: string
+    identification: string
+    name: string
+    partnerId: string
+    partnerKind: string
+    role: string
+    street: string
+    streetNr: string
+    zip: string
+    coords: Coords
   }
 
   type userInfo = {
     firstName: string
     lastName: string
-    avatar: Avatar
+    avatar?: Avatar
     coords: Coords
     currentDistance?: number
     id?: number
@@ -50,6 +66,7 @@ declare namespace DAT {
 
   type Claim = {
     title: string
+    address: string
     claimId: string
     description: string
     plateNo: string

@@ -10,6 +10,7 @@
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.12.1",
     "@types/mapbox-gl": "^2.3.1",
+    "@vueuse/core": "^5.0.3",
     "axios": "^0.21.1",
     "element-plus": "1.0.2-beta.36",
     "mapbox-gl": "^2.3.1",

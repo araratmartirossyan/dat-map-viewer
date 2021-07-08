@@ -4,7 +4,7 @@ import { io, Socket } from 'socket.io-client'
 // Utils
 import { findNearestLocation } from '@/utils/pathFind.util'
 import { useClaimStore } from './claims.store'
-import { getUsers } from '@/services/user.service'
+import { getUsers, getPartners } from '@/services/user.service'
 import { assignClaim } from '@/services/claim.service'
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET as string
@@ -21,6 +21,7 @@ type UserStore = {
   chosenAgentId: string | null
   usersWithLocation?: DAT.userInfo[]
   localFoundUsers?: SortedUsers
+  partners: DAT.PartnerInfo[]
 }
 
 interface TrackSocketResponse extends DAT.userInfo {
@@ -34,10 +35,11 @@ export const useUserStore = defineStore({
       instance: io(SOCKET_URL),
       users: [],
       foundUsers: null,
-      chosenAgentId: null
+      chosenAgentId: null,
+      partners: []
     },
   getters: {
-    usersWithLocation: ({ users }) => users?.filter(user => !!user.coords),
+    usersWithLocation: ({ users }) => users?.filter(user => !!user.coords.lat),
     localFoundUsers: ({ usersWithLocation = [] }) => {
       const claimStore = useClaimStore()
       if (claimStore.currentClaim) {
@@ -47,9 +49,8 @@ export const useUserStore = defineStore({
         )
       }
     },
-    foundAgent: ({ chosenAgentId, users }) => {
-      return users.find(({ _id }) => _id === chosenAgentId)
-    },
+    foundAgent: ({ chosenAgentId, users }) =>
+      users.find(({ _id }) => _id === chosenAgentId),
 
     hasFarest: ({ localFoundUsers }) =>
       localFoundUsers && localFoundUsers?.farest?.length > 0,
@@ -66,7 +67,7 @@ export const useUserStore = defineStore({
                 ...user,
                 coords: {
                   lat: data.position.lat,
-                  long: data.position.long
+                  lng: data.position.lng
                 }
               }
             }
@@ -77,6 +78,37 @@ export const useUserStore = defineStore({
           this.users = [...users]
         }
       })
+    },
+    async fetchPartners() {
+      const partners = await getPartners()
+      this.users = partners.map(({ name, identification, coords }) => ({
+        firstName: name,
+        lastName: name,
+        currentDistance: 0,
+        _id: identification,
+        coords
+      }))
+
+      // firstName: string
+      // lastName: string
+      // avatar: Avatar
+      // coords: Coords
+      // currentDistance?: number
+      // id?: number
+      // _id?: string
+
+      //   active: 'true',
+      // city: 'ROMA',
+      // country: 'IT',
+      // customerNumber: '3132783',
+      // identification: '00004',
+      // name: 'PERITO FIDUCIARIO',
+      // partnerId: '31603',
+      // partnerKind: 'inferior',
+      // role: 'EXPERT',
+      // street: 'Via dei corazzieri',
+      // streetNr: '10',
+      // zip: '00144'
     },
     async fetchUsers() {
       this.users = await getUsers()

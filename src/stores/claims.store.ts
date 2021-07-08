@@ -22,8 +22,9 @@ export const useClaimStore = defineStore({
     async fetchClaim(claimId: string) {
       const loading = ElLoading.service()
       const claim = await fetchClaim(claimId)
-      if (claim[0]) {
-        this.currentClaim = claim[0]
+
+      if (claim) {
+        this.currentClaim = claim
 
         if (this.currentClaim.status === ClaimStatus.Assigned) {
           useUserStore().$patch({

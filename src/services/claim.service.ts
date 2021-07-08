@@ -17,10 +17,10 @@ export const assignClaim = async (data: UpdateClaimInput): Promise<any> => {
   })
 }
 
-export const fetchClaim = async (claimId: string): Promise<DAT.Claim[]> => {
-  const claim = await axiosFn<DAT.Claim[]>({
+export const fetchClaim = async (claimId: string): Promise<DAT.Claim> => {
+  const claim = await axiosFn<DAT.Claim>({
     method: 'GET',
-    url: `${SERVICE_URL}/find?claimId=${claimId}`
+    url: `${SERVICE_URL}/claims/${claimId}`
   })
   return claim
 }

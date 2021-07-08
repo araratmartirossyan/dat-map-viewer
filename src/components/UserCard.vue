@@ -6,7 +6,7 @@
         shape="square"
         :size="40"
         fit="cover"
-        src="../"
+        :src="DefaultAvatar"
         alt="game-image"
       />
       <el-avatar
@@ -19,13 +19,18 @@
     </div>
     <div class="user-card__description">
       <heading tag="h5">{{ firstName }} {{ lastName }}</heading>
-      <el-tag :type="statusTypes[status]">{{ status }}</el-tag>
+      <div class="info">
+        <el-tag :type="statusTypes[status]">{{ status }}</el-tag>
+        <el-tag v-if="!position.lat" type="danger">Offline</el-tag>
+        <el-tag v-else type="success">Online</el-tag>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps, defineAsyncComponent } from 'vue'
+import DefaultAvatar from '@/assets/avatar.png'
 
 // Components
 const Heading = defineAsyncComponent(() => import('@/components/Heading.vue'))
@@ -50,12 +55,16 @@ defineProps({
   avatar: {
     type: Object,
     default: ''
+  },
+  position: {
+    type: Object,
+    default: {}
   }
 })
 
 const statusTypes: DAT.Status = {
   free: 'success',
-  busy: 'danger'
+  busy: 'warning'
 }
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET as string
@@ -93,6 +102,12 @@ const SOCKET_URL = import.meta.env.VITE_SOCKET as string
 
     width: 100%;
     margin-left: $spacing-m;
+
+    .info {
+      .el-tag {
+        margin-right: $spacing-s;
+      }
+    }
 
     p {
       font-size: $font-size-small;

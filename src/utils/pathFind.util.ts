@@ -13,10 +13,10 @@ export const findNearestLocation = (
   users: DAT.userInfo[],
   claimLocation: DAT.Coords
 ): PathFindResult => {
-  const signedUsers = users.map((user) => {
+  const signedUsers = users.map(user => {
     if (user.coords) {
-      const { lat, long } = user.coords
-      const res = distance(lat, long, claimLocation.lat, claimLocation.long)
+      const { lat, lng } = user.coords
+      const res = distance(lat, lng, claimLocation.lat, claimLocation.lng)
 
       return {
         ...user,
