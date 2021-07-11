@@ -32,7 +32,9 @@
           :last-name="lastName"
           :first-name="firstName"
           :id="_id"
+          :is-active="_id === currentAgent"
           @on-card-click="drawLocation"
+          @on-assign-click="handleShowModal"
         />
 
         <heading tag="h3" v-if="userStore.hasFarest">
@@ -46,7 +48,9 @@
           :last-name="lastName"
           :first-name="firstName"
           :id="_id"
+          :is-active="_id === currentAgent"
           @on-card-click="drawLocation"
+          @on-assign-click="handleShowModal"
         />
       </template>
     </drawer>
@@ -160,6 +164,8 @@ const drawLocation = async (choosenAgent: string) => {
       currentLoaderInstance.value
     )
   }
+
+  currentAgent.value = choosenAgent
 }
 </script>
 

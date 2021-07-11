@@ -1,10 +1,6 @@
 <template>
   <page class="login-page">
     <div class="login-page__content">
-      <el-image
-        class="login-page__poster"
-        src="https://images.pexels.com/photos/4905089/pexels-photo-4905089.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-      />
       <div class="login-page__form">
         <div class="login-page__form--heading">
           <el-image
@@ -83,34 +79,21 @@ const handleLogin = async () => {
   padding: 0 5%;
   &__content {
     background-color: $main-bg;
-    min-width: 600px;
     display: flex;
     border-radius: $spacing-m;
-    width: 100%;
-  }
-  &__poster {
-    width: 100%;
-    padding: $spacing-s + 2px;
-    border-top-left-radius: $spacing-m;
-    border-bottom-left-radius: $spacing-m;
-
-    .el-image__inner {
-      border-radius: $spacing-m;
-    }
   }
   &__form {
-    &--content {
-      width: 100%;
-    }
-    width: 50%;
     align-items: center;
     justify-content: center;
     display: flex;
     flex-direction: column;
-    padding: 0 $spacing-l;
+    padding: $spacing-l;
 
     .logo {
       width: 80px;
+    }
+    &--content {
+      min-width: 300px;
     }
 
     &--error {

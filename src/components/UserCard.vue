@@ -1,5 +1,9 @@
 <template>
-  <div class="user-card" @click="$emit('on-card-click', id)">
+  <div
+    class="user-card"
+    :class="{ active: isActive }"
+    @click="$emit('on-card-click', id)"
+  >
     <div class="user-card__image">
       <el-avatar
         v-if="!avatar"
@@ -23,6 +27,9 @@
         <el-tag :type="statusTypes[status]">{{ status }}</el-tag>
         <el-tag v-if="!position.lat" type="danger">Offline</el-tag>
         <el-tag v-else type="success">Online</el-tag>
+        <el-button v-if="isActive" @click="$emit('on-assign-click', id)">
+          Assign
+        </el-button>
       </div>
     </div>
   </div>
@@ -59,6 +66,10 @@ defineProps({
   position: {
     type: Object,
     default: {}
+  },
+  isActive: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -117,5 +128,9 @@ const SOCKET_URL = import.meta.env.VITE_SOCKET as string
   .el-avatar {
     background: none;
   }
+}
+
+.active {
+  border: 2px solid;
 }
 </style>

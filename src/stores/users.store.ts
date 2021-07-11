@@ -62,7 +62,7 @@ export const useUserStore = defineStore({
       this.instance.on('details', (data: TrackSocketResponse) => {
         if (data) {
           const users = this.users.map(user => {
-            if (user._id === data._id) {
+            if (user._id === data.partnerId) {
               return {
                 ...user,
                 coords: {
@@ -81,11 +81,12 @@ export const useUserStore = defineStore({
     },
     async fetchPartners() {
       const partners = await getPartners()
-      this.users = partners.map(({ name, identification, coords }) => ({
+      this.users = partners.map(({ name, partnerId, coords }) => ({
         firstName: name,
         lastName: name,
         currentDistance: 0,
-        _id: identification,
+        _id: partnerId,
+        partnerId,
         coords
       }))
 

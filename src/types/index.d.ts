@@ -25,6 +25,7 @@ declare namespace DAT {
     lastName: string
     avatar?: Avatar
     coords: Coords
+    partnerId: string
     currentDistance?: number
     id?: number
     _id?: string
@@ -74,6 +75,7 @@ declare namespace DAT {
     agent?: DAT.userInfo
     location: Coords
     vin: string
+    expert?: string
     image: string
   }
 

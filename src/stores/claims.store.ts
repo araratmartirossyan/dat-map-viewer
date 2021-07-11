@@ -28,8 +28,10 @@ export const useClaimStore = defineStore({
 
         if (this.currentClaim.status === ClaimStatus.Assigned) {
           useUserStore().$patch({
-            chosenAgentId: this.currentClaim.agent?._id,
-            users: [this.currentClaim.agent]
+            chosenAgentId: this.currentClaim.agent
+              ? this.currentClaim.agent?._id
+              : this.currentClaim.expert
+            // users: [this.currentClaim.agent]
           })
         }
       }
