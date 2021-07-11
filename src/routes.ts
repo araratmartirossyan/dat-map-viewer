@@ -20,7 +20,7 @@ router.beforeEach((to, from) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     return {
-      path: '/login',
+      path: `/login?claimId=${to.query.claimId}`,
       // save the location we were at to come back later
       query: { redirect: to.fullPath }
     }

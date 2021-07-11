@@ -8,18 +8,26 @@ enum ResponseErrors {
   AuthFailed = 'Server.authorizationFailed'
 }
 
+const readRouteParams = () => {
+  const urlSearchParams = new URLSearchParams(window.location.search)
+  return {
+    claimId: urlSearchParams.get('claimId')
+  }
+}
+
 axiosInstance.defaults.baseURL = BASE_API_URL
 axiosInstance.defaults.method = 'POST'
 axiosInstance.interceptors.response.use(
   config => config.data,
   config => {
-    console.log()
     const is403 = config.response.status === 403
+
     const isAuthFailed =
       config.response.data.faultstring === ResponseErrors.AuthFailed
 
     if (is403 || isAuthFailed) {
-      location.href = '/login'
+      const { claimId } = readRouteParams()
+      location.href = `/login?claimId=${claimId}`
     }
 
     return Promise.reject(config.response.data)

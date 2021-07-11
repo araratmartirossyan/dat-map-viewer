@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { reactive } from '@vue/reactivity'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 // Components
 import DatInput from '@/components/Form/Input.vue'
@@ -50,7 +50,8 @@ import DatButton from '@/components/Button.vue'
 import { useAuthStore } from '@/stores'
 
 const authStore = useAuthStore()
-const router = useRouter()
+const { push } = useRouter()
+const { query } = useRoute()
 
 const authForm = reactive<DAT.AuthForm>({
   password: '',
@@ -61,7 +62,8 @@ const authForm = reactive<DAT.AuthForm>({
 const handleLogin = async () => {
   try {
     await authStore.login(authForm)
-    router.push('/')
+    console.log('cLAIM', query)
+    push(`/?claimId=${query.claimId}`)
   } catch {}
 }
 </script>
